@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+/* Use normal CSS instead of @apply */
+body {
+  background-color: #f3f4f6; /* bg-gray-100 */
+  color: #1f2937;           /* text-gray-800 */
+}
+
+button {
+  cursor: pointer;
+}
