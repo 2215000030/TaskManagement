@@ -2,6 +2,7 @@ import { useState } from "react";
 import API from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import AuthHeader from "../components/AuthHeader";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const [data, setData] = useState({ username: "", password: "" });
@@ -12,9 +13,11 @@ export default function Login() {
       const res = await API.post("/Public/login", data);
       localStorage.setItem("token", res.data.data);
       localStorage.setItem("username", data.username); 
+      toast.success("Login successfully");
+
       navigate("/dashboard");
     } catch (err) {
-      alert(err.response?.data?.message || "Login Failed");
+      toast.error("Invalid Username Or Password");
     }
   };
 

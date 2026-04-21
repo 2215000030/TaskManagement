@@ -1,5 +1,6 @@
 import { useState } from "react";
 import API from "../api/axios";
+import toast from "react-hot-toast";
 
 export default function TaskCard({ task, refreshTasks }) {
   const [showModal, setShowModal] = useState(false);
@@ -17,7 +18,7 @@ export default function TaskCard({ task, refreshTasks }) {
       await API.delete(`/Task/task/${task.id}`);
       refreshTasks();
     } catch (err) {
-      alert("Delete failed");
+     toast.error("Delete failed");
     }
   };
 
@@ -27,7 +28,7 @@ export default function TaskCard({ task, refreshTasks }) {
       setShowModal(false);
       refreshTasks();
     } catch (err) {
-      alert("Update failed");
+      toast.error(err.response?.data?.message);
     }
   };
 

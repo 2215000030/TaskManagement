@@ -2,6 +2,7 @@ import { useState } from "react";
 import API from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import AuthHeader from "../components/AuthHeader";
+import toast from "react-hot-toast";
 
 export default function Signup() {
   const [data, setData] = useState({
@@ -14,10 +15,11 @@ export default function Signup() {
   const handleSignup = async () => {
     try {
       await API.post("/Public/signup", data);
-      alert("Signup Successful ✅");
+    //   alert("Signup Successful ✅");
+      toast.success("Sign up Successfully");
       navigate("/"); // go to login
     } catch (err) {
-      alert(err.response?.data?.message || "Signup Failed");
+      toast.error("Invalid credentials");
     }
   };
 

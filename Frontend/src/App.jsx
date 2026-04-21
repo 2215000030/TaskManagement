@@ -10,13 +10,11 @@ import Signup from "./pages/Signup";
 
 function App() {
   const location = useLocation();
-   const hideNavbarRoutes = ["/", "/signup"];
+  const hideNavbarRoutes = ["/", "/signup"];
 
   return (
     <>
-    
-
-{!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
+      {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
 
       <Routes>
         {/* Public */}
@@ -57,11 +55,14 @@ function App() {
           }
         />
 
-        <Route path="/signup" element={
-    <PublicRoute>
-      <Signup />
-    </PublicRoute>
-  } />
+        <Route
+          path="/signup"
+          element={
+            <PublicRoute>
+              <Signup />
+            </PublicRoute>
+          }
+        />
       </Routes>
     </>
   );

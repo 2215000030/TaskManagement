@@ -49,7 +49,7 @@ public class PublicController {
 
         }
         catch(Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ApiResponse("Login Failed", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ApiResponse("Invalid Credentials", e.getMessage()));
         }
     }
 }

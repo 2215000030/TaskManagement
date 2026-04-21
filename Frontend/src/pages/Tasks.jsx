@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import API from "../api/axios";
 import TaskCard from "../components/TaskCard";
 import { useSearchParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function Tasks() {
   const [tasks, setTasks] = useState([]);
@@ -113,7 +114,7 @@ export default function Tasks() {
       const message =
         err?.response?.data?.message || "Task creation failed";
 
-      alert(message);
+      toast.error(message);
     }
   };
 

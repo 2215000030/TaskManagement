@@ -1,6 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import API from "../api/axios";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -10,7 +18,7 @@ export default function Dashboard() {
     completed: 0,
     incomplete: 0,
     notifications: 0,
-    overdue: 0, // ✅ ADDED
+    overdue: 0,
   });
 
   useEffect(() => {
@@ -19,7 +27,6 @@ export default function Dashboard() {
 
   const fetchData = async () => {
     try {
-      // Fetch tasks
       const taskRes = await API.get("/Task/tasks");
       const tasks = taskRes.data.data || [];
 
@@ -31,11 +38,9 @@ export default function Dashboard() {
         (t) => t.status === "INCOMPLETE"
       ).length;
 
-      // Fetch notifications
       const notifRes = await API.get("/Notification/all");
       const notifications = notifRes.data.count || 0;
 
-      // ✅ FETCH OVERDUE FROM BACKEND
       const overdueRes = await API.get("/Task/overdue");
       const overdueTasks = overdueRes.data.data || [];
 
@@ -44,12 +49,19 @@ export default function Dashboard() {
         completed,
         incomplete,
         notifications,
-        overdue: overdueTasks.length, // ✅ ADDED
+        overdue: overdueTasks.length,
       });
     } catch (err) {
       console.log("Error fetching dashboard data");
     }
   };
+
+  // 🔥 Pie Data (using your existing counts)
+  const pieData = [
+    { name: "Completed", value: counts.completed },
+    { name: "Incomplete", value: counts.incomplete },
+    { name: "Overdue", value: counts.overdue },
+  ];
 
   return (
     <div className="p-8">
@@ -105,7 +117,7 @@ export default function Dashboard() {
           </p>
         </div>
 
-        {/* 🔥 OVERDUE (NEW CARD) */}
+        {/* Overdue */}
         <div
           onClick={() => navigate("/tasks?status=OVERDUE")}
           className="bg-red-200 p-6 rounded-xl shadow hover:shadow-lg cursor-pointer transition border-l-4 border-red-700"
@@ -117,7 +129,38 @@ export default function Dashboard() {
             {counts.overdue}
           </p>
         </div>
+      </div>
 
+      {/* 🔥 PIE CHART SECTION (ADDED ONLY THIS) */}
+      <div className="bg-white mt-8 p-6 rounded-xl shadow">
+        <h2 className="text-xl font-bold mb-4">
+          Task Distribution 📊
+        </h2>
+
+        <div className="w-full h-80">
+          <ResponsiveContainer>
+            <PieChart>
+            <Pie
+  data={pieData}
+  dataKey="value"
+  nameKey="name"
+  outerRadius={120}
+  label
+  isAnimationActive={true}
+  animationBegin={200}
+  animationDuration={1500}
+  animationEasing="ease-in-out"
+>
+  <Cell fill="#22c55e" /> {/* Completed */}
+  <Cell fill="#ef4444" /> {/* Incomplete */}
+  <Cell fill="#b91c1c" /> {/* Overdue */}
+</Pie>
+
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );
